@@ -12,7 +12,7 @@ import java.util.Date;
 @Component
 public class JwtService {
 
-    private final String SECRET = "my-secret-key";
+    private final String SECRET = "your-secret-super-secure-key-that-must-be-very-long";
 
     public String generateToken(User user) {
         return Jwts.builder()
