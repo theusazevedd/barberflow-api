@@ -37,11 +37,17 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String email = jwtService.extractUsername(token);
+        String userId = jwtService.extractUserId(token);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            UserDetails userDetails;
+            try {
+                userDetails = userDetailsService.loadUserById(Long.parseLong(userId.trim()));
+            } catch (NumberFormatException ex) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             if (jwtService.isValid(token, userDetails)) {
                 UsernamePasswordAuthenticationToken auth =
