@@ -4,24 +4,28 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "availabilities")
+@Table(name = "availability",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"barber_id", "date_time"}))
 public class Availability {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Instant dateTime;
+    @Column(nullable = false)
+    private LocalDateTime dateTime;
 
     @ManyToOne
+    @JoinColumn(name = "barber_id", nullable = false)
     private User barber;
 
-    private boolean available;
+    private boolean available = true;
 
 }

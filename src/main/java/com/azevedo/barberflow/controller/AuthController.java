@@ -5,6 +5,7 @@ import com.azevedo.barberflow.dto.request.RegisterRequest;
 import com.azevedo.barberflow.dto.response.AuthResponse;
 import com.azevedo.barberflow.dto.response.UserResponse;
 import com.azevedo.barberflow.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +21,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody RegisterRequest request) {
+    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.registerUser(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
