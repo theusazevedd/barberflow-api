@@ -8,12 +8,17 @@ import com.azevedo.barberflow.domain.model.User;
 import com.azevedo.barberflow.dto.request.AppointmentRequest;
 import com.azevedo.barberflow.dto.response.AppointmentResponse;
 import com.azevedo.barberflow.exception.BusinessException;
+import com.azevedo.barberflow.exception.ConflictException;
 import com.azevedo.barberflow.exception.ResourceNotFoundException;
+import com.azevedo.barberflow.messaging.event.AppointmentCanceledEvent;
+import com.azevedo.barberflow.messaging.event.AppointmentCreatedEvent;
 import com.azevedo.barberflow.repository.AppointmentRepository;
 import com.azevedo.barberflow.repository.AvailabilityRepository;
 import com.azevedo.barberflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +33,8 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AvailabilityRepository availabilityRepository;
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Transactional
     public AppointmentResponse create(Long clientId, AppointmentRequest request) {
@@ -47,8 +54,8 @@ public class AppointmentService {
             throw new BusinessException("Time slot already booked");
         }
 
-        if (!availability.isAvailable()) {
-            throw new BusinessException("Time slot already booked");
+        if (appointmentRepository.existsByBarberIdAndDateTime(request.barberId(), request.dateTime())) {
+            throw new ConflictException("Time slot already booked");
         }
 
         Appointment appointment = new Appointment();
@@ -58,7 +65,20 @@ public class AppointmentService {
         appointment.setStatus(AppointmentStatus.CONFIRMED);
 
         availability.setAvailable(false);
-        appointmentRepository.save(appointment);
+        try {
+            appointmentRepository.save(appointment);
+        } catch (DataIntegrityViolationException ex) {
+            throw new ConflictException("Time slot already booked", ex);
+        }
+
+        eventPublisher.publishEvent(
+                new AppointmentCreatedEvent(
+                        appointment.getId(),
+                        appointment.getBarber().getId(),
+                        appointment.getClient().getId(),
+                        appointment.getDateTime()
+                )
+        );
 
         log.info("Appointment created | client={} barber={} time={}",
                 clientId,
@@ -98,6 +118,14 @@ public class AppointmentService {
                 .orElseThrow(() -> new BusinessException("Availability not found"));
 
         availability.setAvailable(true);
+
+        eventPublisher.publishEvent(
+                new AppointmentCanceledEvent(
+                        appointment.getId(),
+                        appointment.getBarber().getId(),
+                        appointment.getClient().getId()
+                )
+        );
 
         log.info("Appointment canceled | id={}", appointmentId);
     }
@@ -148,10 +176,6 @@ public class AppointmentService {
                 appointment.getStatus()
         );
     }
-
-
-
-
 
 
 }
