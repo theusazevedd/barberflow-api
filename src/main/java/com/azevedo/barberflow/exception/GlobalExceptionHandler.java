@@ -10,7 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
 
     private ErrorResponse buildError(int status, String message, String path, String error) {
         return ErrorResponse.builder()
-                .timestamp(Instant.now())
+                .timestamp(LocalDateTime.now())
                 .message(message)
                 .error(error)
                 .status(status)
