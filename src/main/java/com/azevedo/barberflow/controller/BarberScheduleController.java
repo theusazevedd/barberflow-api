@@ -4,6 +4,7 @@ import com.azevedo.barberflow.dto.request.BarberScheduleRequest;
 import com.azevedo.barberflow.dto.response.BarberScheduleResponse;
 import com.azevedo.barberflow.security.CustomUserDetails;
 import com.azevedo.barberflow.service.BarberScheduleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/barbers/me/schedule")
 @RequiredArgsConstructor
+@Tag(name = "Barber schedule")
 public class BarberScheduleController {
 
     private final BarberScheduleService service;
