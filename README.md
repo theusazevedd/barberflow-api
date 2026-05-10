@@ -206,4 +206,4 @@ Os testes automatizados (`mvn test`) estão comentados no workflow até haver su
 
 ## Licença
 
-Este repositório não inclui arquivo de licença por padrão. Defina uma licença conforme o uso pretendido.
+Este repositório não inclui arquivo de licença por padrão. Defina uma licença conforme uso pretendido.
