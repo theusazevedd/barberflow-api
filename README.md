@@ -2,6 +2,11 @@
 
 API REST para agendamento em barbearia: cadastro e autenticação com JWT, perfis **CLIENT** e **BARBER**, disponibilidade de horários, marcação de atendimentos e mensageria assíncrona com RabbitMQ. Projeto pensado como **referência de estudo** em Spring Boot com empacotamento Docker e deploy em ambientes como Railway.
 
+## Demo
+
+Swagger UI:
+https://barberflow-api-production-5e64.up.railway.app/swagger-ui/index.html#/
+
 ---
 
 ## Features
