@@ -20,42 +20,9 @@ API REST para agendamento em barbearia: cadastro e autenticação com JWT, perfi
 
 ---
 
-## Galeria
-
-Diagrama de alto nível (vetorial, versionado no repositório):
-
-<p align="center">
-  <img src="docs/assets/architecture.svg" alt="Diagrama: cliente HTTP, API Barberflow, PostgreSQL e RabbitMQ" width="780"/>
-</p>
-
-Screenshots **opcionais** — adicione os arquivos em [`docs/assets/`](docs/assets/) (veja instruções lá). Até você incluir os PNGs, o preview no GitHub pode mostrar imagens quebradas nas linhas abaixo.
-
-<p align="center">
-  <strong>Swagger (produção)</strong><br/>
-  <img src="docs/assets/swagger-ui.png" alt="Swagger UI da API em produção" width="820"/><br/>
-  <sub><code>docs/assets/swagger-ui.png</code></sub>
-</p>
-
-<p align="center">
-  <strong>Railway</strong><br/>
-  <img src="docs/assets/railway.png" alt="Dashboard do projeto na Railway" width="820"/><br/>
-  <sub><code>docs/assets/railway.png</code></sub>
-</p>
-
-<p align="center">
-  <strong>RabbitMQ (management UI)</strong><br/>
-  <img src="docs/assets/rabbitmq-management.png" alt="Filas ou overview no RabbitMQ Management" width="820"/><br/>
-  <sub><code>docs/assets/rabbitmq-management.png</code></sub>
-</p>
-
-> **Sobre capturas automáticas:** não tenho acesso à sua conta Railway nem à URL privada do deploy; também não há ambiente gráfico aqui para tirar print do navegador. O fluxo recomendado é: rodar localmente ou abrir o Swagger público, usar a ferramenta de captura do SO e salvar os PNGs com os nomes acima.
-
----
-
 ## Sumário
 
 - [Features](#features)
-- [Galeria](#galeria)
 - [Stack](#stack)
 - [Arquitetura (visão geral)](#arquitetura-visão-geral)
 - [Pré-requisitos](#pré-requisitos)
